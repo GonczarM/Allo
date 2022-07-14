@@ -7,7 +7,7 @@ const {IamAuthenticator} = require('ibm-watson/auth');
 const languageTranslator = new LanguageTranslatorV3({
   	version: '2021-03-27',
   	authenticator: new IamAuthenticator({
-  		apikey: process.env.LANGUAGE_TRANSLATOR_IAM_APIKEY,
+  		apikey: process.env.LANGUAGE_TRANSLATOR_API_KEY,
   	}),
 	serviceUrl: process.env.LANGUAGE_TRANSLATOR_URL,
 });
@@ -35,8 +35,8 @@ router.post('/:convo', isAuthenticated, async (req, res, next) => {
 				}
 			}
 // this stops the translating if the users use the same language
-			if(foundUser[0].language == loggedUser.language){
-				foundConvo.messages.push({ ...req.body, 'user': loggedUser})
+			if(foundUser[0].language === loggedUser.language){
+				foundConvo.messages.push({ ...req.body, 'user': loggedUser.id})
 			    await foundConvo.save()
 				res.json({
 					status: 200,
@@ -52,7 +52,7 @@ router.post('/:convo', isAuthenticated, async (req, res, next) => {
 				const messageDbEntry = {}
 				messageDbEntry.text = req.body.text
 				messageDbEntry.translatedText = translationResult.result.translations[0].translation
-                foundConvo.messages.push({ ...messageDbEntry, 'user': loggedUser})
+                foundConvo.messages.push({ ...messageDbEntry, 'user': loggedUser.id})
 			  	await foundConvo.save()
 				res.json({
 					status: 200,

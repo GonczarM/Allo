@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
+const session = require('express-session');
 // const favicon = require('serve-favicon');
 
 require('./config/database');
@@ -12,14 +13,20 @@ const app = express();
 
 // add in when the app is ready to be deployed
 // app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
+app.use(express.urlencoded({extended: true}));
 app.use(logger('dev'));
 app.use(express.json());
+app.use(session({
+	secret: process.env.SESSION_SECRET,
+	resave: false,
+	saveUninitialized: false
+}));
 app.use(express.static(path.join(__dirname, 'build')));
 
 // app.use(require('./config/auth')); // <- Step 5 in https://git.generalassemb.ly/SEI-CC/seir-11-29/blob/main/work/w11/d1/jwt-boilerplatec-code.md#flow-of-token-based-authentication
-// app.use('/api/users', require('./routes/api/users'));
-// app.use('/api/posts', require('./routes/api/posts'));
-// app.use('/api', require('./routes/api/likes'));
+app.use('/users', require('./controllers/users'));
+app.use('/conversations', require('./controllers/conversations'));
+app.use('/messages', require('./controllers/messages'));
 // "catch all" route
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));

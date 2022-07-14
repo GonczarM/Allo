@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Conversation = require('./conversation');
 
 const userSchema = new mongoose.Schema({
 	username: {

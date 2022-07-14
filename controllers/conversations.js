@@ -94,11 +94,11 @@ router.post('/:user', async (req, res, next) => {
 		const foundUser = await User.findOne({'username': req.params.user})
 		// write an if statement to check if users already have a chat
 		const createdConvo = await Convo.create(req.body)
-		createdConvo.users.push(foundUser, loggedUser)
+		createdConvo.users.push(foundUser.id, loggedUser.id)
 		createdConvo.save()
-		loggedUser.conversations.push(createdConvo)
+		loggedUser.conversations.push(createdConvo.id)
 		loggedUser.save()
-		foundUser.conversations.push(createdConvo)
+		foundUser.conversations.push(createdConvo.id)
 		foundUser.save()
 		res.json({
 			status: 200,
