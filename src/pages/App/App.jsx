@@ -33,7 +33,7 @@ function App(){
     }
 
     const handleLogin = async (formData) => {
-        const loginResponse = await fetch('/users/login', {
+        const loginResponse = await fetch('/users/login/', {
             method: "POST",
             body: JSON.stringify(formData),
             headers: {
