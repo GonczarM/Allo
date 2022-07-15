@@ -11,6 +11,10 @@ function App(){
     const [error, setError] = useState(null)
     const [convoId, setConvoId] = useState(null)
 
+    useEffect(() => {
+      console.log(convoId)
+    }, [convoId])
+
     const handleRegister = async (formData) => {
         const registerResponse = await fetch('/users/register', {
             method: "POST",
@@ -61,7 +65,7 @@ function App(){
         <div>
             {loggedIn ? 
                 <div>
-                <SearchUser />            
+                <SearchUser convoToShow={convoToShow} />            
                 <ConvosList user={user} convoToShow={convoToShow}/>
                 {convoId &&                            
                     <Convo convoId={convoId}/>

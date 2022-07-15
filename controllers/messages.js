@@ -36,7 +36,7 @@ router.post('/:convo', isAuthenticated, async (req, res, next) => {
 			}
 // this stops the translating if the users use the same language
 			if(foundUser[0].language === loggedUser.language){
-				foundConvo.messages.push({ ...req.body, 'user': loggedUser.id})
+				foundConvo.messages.push({ ...req.body, 'user': loggedUser})
 			    await foundConvo.save()
 				res.json({
 					status: 200,
@@ -52,16 +52,16 @@ router.post('/:convo', isAuthenticated, async (req, res, next) => {
 				const messageDbEntry = {}
 				messageDbEntry.text = req.body.text
 				messageDbEntry.translatedText = translationResult.result.translations[0].translation
-                foundConvo.messages.push({ ...messageDbEntry, 'user': loggedUser.id})
+                foundConvo.messages.push({ ...messageDbEntry, 'user': loggedUser})
 			  	await foundConvo.save()
 				res.json({
 					status: 200,
-					message: foundConvo.messages[foundConvo.messages.length -1]
+					message: foundConvo.messages[foundConvo.messages.length -1],
 				})
 			}
 	}
 	catch(error){
-		console.log(next(error));
+		console.log(error);
 		res.json({
 			status: 400,
 			error: error

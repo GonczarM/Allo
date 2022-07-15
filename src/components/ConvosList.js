@@ -11,7 +11,11 @@ const ConvosList = ({user, convoToShow}) => {
                 {user.conversations.map(convo => {
                     return (
                     <li key={convo._id}>
-                        <button onClick={convoToShow.bind(null, convo._id)}>{convo.users[1].username}</button><br/>
+                        <button 
+                            onClick={convoToShow.bind(null, convo._id)}
+                        >
+                        {user.username === convo.users[0].username ? convo.users[1].username : convo.users[0].username}
+                        </button><br/>
                     </li> 
                     )
                 })}

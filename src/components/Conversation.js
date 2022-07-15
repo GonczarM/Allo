@@ -7,7 +7,7 @@ const Conversation = ({convoId}) => {
 
     useEffect(() => {
         getMessages()
-    }, [])
+    }, [convoId])
 
     const getMessages = async () => {
         const messagesResponse = await fetch(`/convos/convo/${convoId}`, {
