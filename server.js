@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const session = require('express-session');
-const favicon = require('serve-favicon');
+// const favicon = require('serve-favicon');
 
 require('./config/database');
 
@@ -12,7 +12,7 @@ require('./config/database');
 const app = express();
 
 // add in when the app is ready to be deployed
-app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
 app.use(express.urlencoded({extended: true}));
 app.use(logger('dev'));
 app.use(express.json());
