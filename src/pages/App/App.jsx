@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 // import './App.css'
 import ConvosList from '../../components/ConvosList.js'
 import Convo from '../../components/Conversation.js'
@@ -10,10 +10,6 @@ function App(){
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null)
     const [convoId, setConvoId] = useState(null)
-
-    useEffect(() => {
-      console.log(convoId)
-    }, [convoId])
 
     const handleRegister = async (formData) => {
         const registerResponse = await fetch('/users/register', {
@@ -59,6 +55,12 @@ function App(){
 
     const convoToShow = (convoId) => {
         setConvoId(convoId)
+    }
+    
+    if(error) {
+      return (
+        <p>{error}</p>
+      )
     }
 
     return(

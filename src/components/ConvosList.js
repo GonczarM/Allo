@@ -1,9 +1,5 @@
-import { useEffect, useState } from "react"
 
 const ConvosList = ({user, convoToShow}) => {
-
-    const [showcreateConvo, setShowCreateConvo] = useState(false)
-    const [showSettings, setShowSettings] = useState(false)
 
     return (
         <>

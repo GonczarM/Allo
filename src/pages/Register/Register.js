@@ -5,7 +5,6 @@ function Register({toggleLogin, handleRegister}){
 	const [username, setUsername] = useState(null)
 	const [password, setPassword] = useState(null)
 	const [language, setLanguage] = useState(null)
-	const [location, setLocation] = useState(null)
 	return(
 		<div className='login'>
 			{/* <img src={Logo} alt='allo logo'/> */}
