@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 // app.use(require('./config/auth')); // <- Step 5 in https://git.generalassemb.ly/SEI-CC/seir-11-29/blob/main/work/w11/d1/jwt-boilerplatec-code.md#flow-of-token-based-authentication
 app.use('/users', require('./controllers/users'));
-app.use('/conversations', require('./controllers/conversations'));
+app.use('/convos', require('./controllers/conversations'));
 app.use('/messages', require('./controllers/messages'));
 // "catch all" route
 app.get('/*', function(req, res) {

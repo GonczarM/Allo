@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 // import './App.css'
-// import ConvosList from './ConvosList/ConvosList.jsx'
-// import Convo from './Convo/Convo.jsx'
+import ConvosList from '../../components/ConvosList.js'
+import Convo from '../../components/Conversation.js'
 import AuthGateway from '../AuthGateway/AuthGateway.js'
+import SearchUser from '../../components/SearchUser'
 
 function App(){
     const [loggedIn, setLoggedIn] = useState(false);
@@ -58,16 +59,17 @@ function App(){
 
     return(
         <div>
-            {/* {loggedIn ? 
-                <div>            
+            {loggedIn ? 
+                <div>
+                <SearchUser />            
                 <ConvosList user={user} convoToShow={convoToShow}/>
                 {convoId &&                            
                     <Convo convoId={convoId}/>
                 }
                 </div>
-            :     */}
+            :    
                 <AuthGateway handleLogin={handleLogin} handleRegister={handleRegister}/>            
-            {/* // } */}
+           }
         </div>
     )
 }

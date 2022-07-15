@@ -25,36 +25,6 @@ router.get('/convo/:id', async (req, res, next) => {
 	}
 })
 
-// list of logged in users conversations
-// router.get('/current', async (req, res, next) => {
-// 	try{
-// 		if(req.session.userId == undefined){
-// 			res.json({
-// 				status: 401,
-// 				message: 'you must be logged in'
-// 			})
-// 		}
-// 		else{
-// 			const foundUser = await User.findById(req.session.userId)
-// 			.populate({
-// 				path: 'conversations',
-// 				populate: {path: 'users'}
-// 			})
-// 			res.json({
-// 				status: 200,
-// 				convos: foundUser.conversations
-// 			})
-// 		}
-// 	}
-// 	catch(error){
-// 		console.log(next(error));
-// 		res.json({
-// 			status: 400,
-// 			error: error
-// 		})
-// 	}		
-// })
-
 // search for a conversation by username
 router.get('/search/:username', async (req, res, next) => {
 	try{
