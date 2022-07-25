@@ -17,7 +17,7 @@ const ConvosList = ({user, convoToShow}) => {
         )
       })
 		}
-			</ListGroup>
+		</ListGroup>
   )
 }
 
