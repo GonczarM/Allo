@@ -15,7 +15,6 @@ const NewMessage = ({createMessage}) => {
 	return (
 	<Form id='message' className='message'>
 		<Form.Group className='"mb-3' controlId="formBasic">
-          	<Form.Label>New Message</Form.Label>
           	<Form.Control 
 				rows={3} 
 				as='textarea' 
