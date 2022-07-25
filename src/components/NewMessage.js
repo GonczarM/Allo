@@ -6,7 +6,13 @@ const NewMessage = ({createMessage}) => {
 	const [text, setText] = useState("")
 
 	const handleSubmit = (e) => {
+		console.log(e.target)
 		if(e.keyCode == 13 && e.shiftKey == false) {
+			e.preventDefault();
+			createMessage({text})
+			setText("")
+		}
+		else if(e.button === 0){
 			e.preventDefault();
 			createMessage({text})
 			setText("")
