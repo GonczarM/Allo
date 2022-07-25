@@ -45,8 +45,8 @@ router.post('/:convo', isAuthenticated, async (req, res, next) => {
 			}
 			else{
 				const translateParams = {
-		  		text: req.body.text,
-		  		modelId: `${loggedUser.language}-${foundUser[0].language}`
+		  			text: req.body.text,
+		  			modelId: `${loggedUser.language}-${foundUser[0].language}`
 				};
 				const translationResult = await languageTranslator.translate(translateParams);
 				const messageDbEntry = {}

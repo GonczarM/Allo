@@ -1,0 +1,10 @@
+.left,
+.right {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+}
+
+.right {
+    justify-content: flex-end;
+}

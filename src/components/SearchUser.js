@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button';
 
 const SearchUser = ({ convoToShow }) => {
     const [username, setUsername] = useState('')
@@ -33,20 +35,29 @@ const SearchUser = ({ convoToShow }) => {
 	}
 
 
-        return (
-            <div className='searchUsers'>
-                <form onSubmit={(e) => {
-                    e.preventDefault()
-                    handleSubmit()
-                }}>
-                    <input type='text' value={username} name='username' placeholder='Search by username' onChange={handleChange}/>
-                    <button className='search' >Search</button>
-                </form>
-                {foundUser && 
-                <button className='user' onClick={createConvo}>{foundUser.username}</button>
-                }
-            </div>
-        )
+  return (
+    <>
+      <Form onSubmit={(e) => {
+        e.preventDefault()
+        handleSubmit()
+      }}>
+        <Form.Group className='"mb-3' controlId="formBasic">
+          <Form.Label>Search User</Form.Label>
+          <Form.Control  
+            type='text' 
+            value={username} 
+            name='username' 
+            placeholder='Search by username' 
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Button variant="primary" type='submit' >Search</Button>
+      </Form>
+      {foundUser && 
+        <Button onClick={createConvo}>{foundUser.username}</Button>
+      }
+    </>
+  )
 }
 
 export default SearchUser;

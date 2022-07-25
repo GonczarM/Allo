@@ -1,5 +1,5 @@
-import Register from '../Register/Register.js'
-import Login from '../Login/Login.js'
+import Register from '../../components/Register.js'
+import Login from '../../components/Login.js'
 import { useState } from 'react'
 
 const AuthGateway = ({ handleLogin, handleRegister}) => {
