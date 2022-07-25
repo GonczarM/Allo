@@ -17,7 +17,7 @@ const NewMessage = ({createMessage}) => {
 		<Form.Group className='"mb-3' controlId="formBasic">
           	<Form.Label>New Message</Form.Label>
           	<Form.Control 
-				rows={2} 
+				rows={3} 
 				as='textarea' 
 				placeholder='type a message' 
 				onChange={e => setText(e.target.value)}

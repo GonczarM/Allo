@@ -9,17 +9,17 @@ const AuthGateway = ({ handleLogin, handleRegister}) => {
         setLogin(!login)
 	}
 
-		return(
-			<div>
-				{login ?
-					<Login handleLogin={handleLogin} toggleLogin={toggleLogin}>
-					</Login>
-					:
-					<Register handleRegister={handleRegister} toggleLogin={toggleLogin}>
-					</Register>
-				}
-			</div>
-		)
+	return(
+		<div>
+			{login ?
+				<Login handleLogin={handleLogin} toggleLogin={toggleLogin}>
+				</Login>
+				:
+				<Register handleRegister={handleRegister} toggleLogin={toggleLogin}>
+				</Register>
+			}
+		</div>
+	)
 }
 
 export default AuthGateway

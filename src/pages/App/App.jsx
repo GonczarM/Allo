@@ -8,75 +8,75 @@ import {Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 
 
 function App(){
-    const [loggedIn, setLoggedIn] = useState(false);
-    const [user, setUser] = useState(null);
-    const [error, setError] = useState(null)
-    const [convo, setConvo] = useState(null)
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null)
+  const [convo, setConvo] = useState(null)
 
-    const handleRegister = async (formData) => {
-        const registerResponse = await fetch('/users/register', {
-            method: "POST",
-            body: JSON.stringify(formData),
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "include"
-        })
-        const parsedResponse = await registerResponse.json()
-        console.log(parsedResponse)
-        if(parsedResponse.status === 200){
-            setUser(parsedResponse.user)
-            setLoggedIn(true)
-        } else if(parsedResponse.status === 401){
-            setError(parsedResponse.message)
-        } else {
-            setError(parsedResponse.error)
-        }
+  const handleRegister = async (formData) => {
+  	const registerResponse = await fetch('/users/register', {
+      method: "POST",
+      body: JSON.stringify(formData),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include"
+    })
+    const parsedResponse = await registerResponse.json()
+    console.log(parsedResponse)
+    if(parsedResponse.status === 200){
+      setUser(parsedResponse.user)
+      setLoggedIn(true)
+    } else if(parsedResponse.status === 401){
+      setError(parsedResponse.message)
+    } else {
+      setError(parsedResponse.error)
     }
+  }
 
-    const handleLogin = async (formData) => {
-        const loginResponse = await fetch('/users/login', {
-            method: "POST",
-            body: JSON.stringify(formData),
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "include"
-        })
-        const parsedResponse = await loginResponse.json()
-        console.log(parsedResponse);
-        if(parsedResponse.status === 200){
-            setUser(parsedResponse.user)
-            setLoggedIn(true)
-        } else if(parsedResponse.status === 401 || parsedResponse.status === 402){
-            setError(parsedResponse.message)
-        } else {
-            setError(parsedResponse.error)
-        }
-    }
+  const handleLogin = async (formData) => {
+    const loginResponse = await fetch('/users/login', {
+      method: "POST",
+      body: JSON.stringify(formData),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include"
+    })
+    const parsedResponse = await loginResponse.json()
+    console.log(parsedResponse);
+    if(parsedResponse.status === 200){
+      setUser(parsedResponse.user)
+      setLoggedIn(true)
+    } else if(parsedResponse.status === 401 || parsedResponse.status === 402){
+      setError(parsedResponse.message)
+    } else {
+      setError(parsedResponse.error)
+      }
+  }
 
-		const getUserInfo = async () => {
-			const response = await fetch('/users/current', {
-				credentials: "include"
-			})
-			const parsedResponse = await response.json()
-			console.log(parsedResponse)
-			if(parsedResponse.status === 200){
-				setUser(parsedResponse.user)
-			} else {
+	const getUserInfo = async () => {
+		const response = await fetch('/users/current', {
+			credentials: "include"
+		})
+		const parsedResponse = await response.json()
+		console.log(parsedResponse)
+		if(parsedResponse.status === 200){
+			setUser(parsedResponse.user)
+		} else {
 			setError(parsedResponse.error)
-			}
 		}
+	}
 
-    const convoToShow = (convo) => {
-        setConvo(convo)
-    }
+  const convoToShow = (convo) => {
+    setConvo(convo)
+  }
     
-    if(error) {
-      return (
-        <p>{error}</p>
-      )
-    }
+  if(error) {
+    return (
+      <p>{error}</p>
+    )
+  }
 
   return(
   	<Container>
