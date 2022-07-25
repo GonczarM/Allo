@@ -6,17 +6,17 @@ const NewMessage = ({createMessage}) => {
 	const [text, setText] = useState("")
 
 	const handleSubmit = (e) => {
-		console.log(e.target)
 		if(e.keyCode == 13 && e.shiftKey == false) {
 			e.preventDefault();
 			createMessage({text})
 			setText("")
 		}
-		else if(e.button === 0){
-			e.preventDefault();
-			createMessage({text})
-			setText("")
-		}
+	}
+
+	const handleClick = (e) => {
+		e.preventDefault();
+		createMessage({text})
+		setText("")
 	}
 
 	return (
@@ -31,7 +31,7 @@ const NewMessage = ({createMessage}) => {
 				value={text}
 			/>
 		</Form.Group>
-		<Button onClick={handleSubmit}>Send Message</Button>
+		<Button onClick={handleClick}>Send Message</Button>
 	</Form>
 	)
 }
