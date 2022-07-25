@@ -14,24 +14,25 @@ function App(){
   const [convo, setConvo] = useState(null)
 
   const handleRegister = async (formData) => {
-  	const registerResponse = await fetch('/users/register', {
-      method: "POST",
-      body: JSON.stringify(formData),
-      headers: {
-        "Content-Type": "application/json"
-      },
-      credentials: "include"
-    })
-    const parsedResponse = await registerResponse.json()
-    console.log(parsedResponse)
-    if(parsedResponse.status === 200){
-      setUser(parsedResponse.user)
-      setLoggedIn(true)
-    } else if(parsedResponse.status === 401){
-      setError(parsedResponse.message)
-    } else {
-      setError(parsedResponse.error)
-    }
+		console.log(formData)
+  	// const registerResponse = await fetch('/users/register', {
+    //   method: "POST",
+    //   body: JSON.stringify(formData),
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   credentials: "include"
+    // })
+    // const parsedResponse = await registerResponse.json()
+    // console.log(parsedResponse)
+    // if(parsedResponse.status === 200){
+    //   setUser(parsedResponse.user)
+    //   setLoggedIn(true)
+    // } else if(parsedResponse.status === 401){
+    //   setError(parsedResponse.message)
+    // } else {
+    //   setError(parsedResponse.error)
+    // }
   }
 
   const handleLogin = async (formData) => {

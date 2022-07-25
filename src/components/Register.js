@@ -35,7 +35,7 @@ function Register({toggleLogin, handleRegister}){
 				<Form.Group className='mb-3'>
 					<Form.Label>Language</Form.Label>
 					<Form.Select 
-						onChange={e => setLanguage(console.log(e.target.value))}
+						onChange={e => setLanguage(e.target.value)}
 						value={language}
 					>
 					{languages.map(choice => {
