@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import { Button } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 
 const NewMessage = ({createMessage}) => {
@@ -24,6 +25,7 @@ const NewMessage = ({createMessage}) => {
 				value={text}
 			/>
 		</Form.Group>
+		<Button onClick={handleSubmit}>Send Message</Button>
 	</Form>
 	)
 }
