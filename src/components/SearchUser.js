@@ -30,7 +30,7 @@ const SearchUser = ({ convoToShow }) => {
     console.log(parsedResponse)
 		if(parsedResponse.status === 200){
       setFoundUser('')
-      convoToShow(parsedResponse.convo._id)
+      convoToShow(parsedResponse.convo)
 		}
 	}
 
