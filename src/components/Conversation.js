@@ -1,15 +1,27 @@
 import { useEffect, useState } from "react"
 import { Container, ListGroup } from "react-bootstrap"
+import openSocket from 'socket.io-client'
 import NewMessage from "./NewMessage"
 import Message from './Message'
+export const socket = openSocket(process.env.BACKEND_URL)
 
 const Conversation = ({convo, getUserInfo, user}) => {
 
   const [messages, setMessages] = useState([])
+	const [socketMessage, setSocketMessage] = useState(null)
 
   useEffect(() => {
     getMessages()
   }, [convo])
+
+	useEffect(() => {
+		socket.on('messages', (msg) => {
+			if(user.username !== msg.user.username){
+				getMessages()
+				console.log('different user')
+			}
+		})
+	}, [])
 
   const getMessages = async () => {
     const messagesResponse = await fetch(`/convos/convo/${convo._id}`, {
@@ -36,7 +48,13 @@ const Conversation = ({convo, getUserInfo, user}) => {
 		if(parsedResponse.status === 200){
 			setMessages([...messages, parsedResponse.message])
 			getUserInfo()
+			setSocketMessage(parsedResponse.message)
 		}
+	}
+
+	if(socketMessage){
+		socket.emit('messages', socketMessage)
+		setSocketMessage(null)
 	}
 
   return (

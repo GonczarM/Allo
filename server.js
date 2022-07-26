@@ -1,15 +1,19 @@
 require('dotenv').config();
 const express = require('express');
+const app = express();
 const path = require('path');
 const logger = require('morgan');
 const session = require('express-session');
+const http = require('http')
+const server = http.createServer(app)
+const { Server } = require('socket.io')
+const io = new Server(server)
 // const favicon = require('serve-favicon');
 
 require('./config/database');
 
 // Require controllers here
 
-const app = express();
 
 // add in when the app is ready to be deployed
 // app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
@@ -32,8 +36,27 @@ app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
+io.on('connection', (socket) => {
+	console.log('user conncected');
+
+	socket.on("messages", (message) => {
+		console.log('messages reiceved from client');
+		io.sockets.emit('messages', message)
+		console.log('messages sent to clients');
+	})
+
+// 	socket.on('conversations', (conversation) => {
+// 		console.log('conversation sent');
+// 		io.sockets.emit('conversations', conversation)
+// 	})
+
+	socket.on('disconnect', () => {
+		console.log('user disconnected');
+	})
+})
+
 const port = process.env.PORT || 3001;
 
-app.listen(port, function() {
+server.listen(port, function() {
   console.log(`Express app listening on port ${port}`);
 });
