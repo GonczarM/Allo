@@ -16,6 +16,10 @@ function isAuthenticated(req, res, next){
 router.get('/user/:id', async (req, res, next) => {
 	try{
 		const foundUser = await User.findById(req.params.id)
+		.populate({
+			path: 'conversations', options: { sort: { 'updated_at': -1}},
+			populate: {path: 'users'}
+		})
 		res.json({
 			status: 200,
 			user: foundUser
@@ -35,7 +39,7 @@ router.get('/current', isAuthenticated, async (req, res, next) => {
 	try{
 			const currentUser = await User.findById(req.session.userId)
 			.populate({
-				path: 'conversations',
+				path: 'conversations', options: { sort: { 'updated_at': -1}},
 				populate: {path: 'users'}
 			})
 			res.json({
@@ -132,7 +136,7 @@ router.post('/register', async (req, res, next) => {
 // login a user
 router.post('/login', async (req, res, next) => {
 	try{
-		const foundUser = await User.findOne({'username': req.body.username})
+		const foundUser = await User.findOneAndUpdate({'username': req.body.username}, {active: true}, {new: true})
         .populate({
             path: 'conversations',
             populate: {path: 'users'}

@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css'
 import ConvosList from '../../components/ConvosList.js'
 import Convo from '../../components/Conversation.js'
 import AuthGateway from '../AuthGateway/AuthGateway.js'
 import SearchUser from '../../components/SearchUser'
 import {Container, Row, Col, Card, Form, Button } from "react-bootstrap";
+import openSocket from 'socket.io-client'
+export const socket = openSocket(process.env.BACKEND_URL)
 
 
 function App(){
@@ -12,6 +14,15 @@ function App(){
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null)
   const [convo, setConvo] = useState(null)
+	const [session, setSession] = useState(null)
+	const [users, setUsers] = useState([])
+
+	useEffect(() => {
+		socket.on('users', (users) => {
+			console.log(users)
+				setUsers(users)
+		})
+	}, [])
 
   const handleRegister = async (formData) => {
   	const registerResponse = await fetch('/users/register', {
@@ -46,6 +57,7 @@ function App(){
     const parsedResponse = await loginResponse.json()
     console.log(parsedResponse);
     if(parsedResponse.status === 200){
+			setSession(parsedResponse.session)
       setUser(parsedResponse.user)
       setLoggedIn(true)
     } else if(parsedResponse.status === 401 || parsedResponse.status === 402){
@@ -56,7 +68,8 @@ function App(){
   }
 
 	const getUserInfo = async () => {
-		const response = await fetch('/users/current', {
+		console.log('hello')
+		const response = await fetch(`/users/current`, {
 			credentials: "include"
 		})
 		const parsedResponse = await response.json()
@@ -71,7 +84,11 @@ function App(){
   const convoToShow = (convo) => {
     setConvo(convo)
   }
-    
+   
+	if(session){
+		socket.emit('user', session.userId)
+		setSession(null)
+	}
   if(error) {
     return (
       <p>{error}</p>
@@ -83,8 +100,8 @@ function App(){
       {loggedIn ? 
       <Row>
         <Col xl={4} lg={4} md={4} sm={3}>
-          <SearchUser convoToShow={convoToShow} />    
-          <ConvosList user={user} convoToShow={convoToShow}/>
+          <SearchUser convoToShow={convoToShow} getUserInfo={getUserInfo} />    
+          <ConvosList user={user} users={users} convoToShow={convoToShow}/>
 				</Col>
 				<Col xl={8} lg={8} md={8} sm={9}>    
           {convo &&                            

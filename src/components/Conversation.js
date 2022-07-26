@@ -15,7 +15,7 @@ const Conversation = ({convo, getUserInfo, user}) => {
   }, [convo])
 
 	useEffect(() => {
-		socket.on('messages', (msg) => {
+		socket.on('message', (msg) => {
 			if(user.username !== msg.user.username){
 				getMessages()
 				console.log('different user')
@@ -53,7 +53,7 @@ const Conversation = ({convo, getUserInfo, user}) => {
 	}
 
 	if(socketMessage){
-		socket.emit('messages', socketMessage)
+		socket.emit('message', socketMessage)
 		setSocketMessage(null)
 	}
 

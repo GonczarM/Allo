@@ -6,7 +6,10 @@ const logger = require('morgan');
 const session = require('express-session');
 const http = require('http')
 const server = http.createServer(app)
-const { Server } = require('socket.io')
+const { Server } = require('socket.io');
+const user = require('./models/user');
+const { useSyncExternalStore } = require('react');
+const { connect } = require('http2');
 const io = new Server(server)
 // const favicon = require('serve-favicon');
 
@@ -36,22 +39,33 @@ app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
+const users = []
 io.on('connection', (socket) => {
-	console.log('user conncected');
 
-	socket.on("messages", (message) => {
-		console.log('messages reiceved from client');
-		io.sockets.emit('messages', message)
-		console.log('messages sent to clients');
+	socket.on("message", (message) => {
+		io.sockets.emit('message', message)
 	})
 
-// 	socket.on('conversations', (conversation) => {
-// 		console.log('conversation sent');
-// 		io.sockets.emit('conversations', conversation)
-// 	})
+	socket.on('convo', (conversation) => {
+		io.sockets.emit('convo', conversation)
+	})
+
+	socket.on('user', (userId) => {
+		const foundUser = users.find(user => user === userId)
+		if(!foundUser){
+			users.push(userId)
+		}
+		socket.userId = userId
+		io.sockets.emit('users', users)
+	})
 
 	socket.on('disconnect', () => {
-		console.log('user disconnected');
+		const index = users.indexOf(socket.userId)
+		console.log('disconnect')
+		if(index !== -1){
+			users.splice(index, 1)
+		}
+		io.sockets.emit('users', users)
 	})
 })
 
