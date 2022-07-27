@@ -1,11 +1,8 @@
 import {Button, ListGroup} from "react-bootstrap";
 import '../pages/App/App.css'
-import openSocket from 'socket.io-client'
 import { useEffect } from "react";
-export const socket = openSocket(process.env.BACKEND_URL)
 
 const ConvosList = ({user, convoToShow, users}) => {
-
   return (
 		<ListGroup>
 		{user.conversations &&
@@ -16,7 +13,6 @@ const ConvosList = ({user, convoToShow, users}) => {
 				const convoUserObj = Object.entries(convo.users[0])
 				const foundUser = userObj[1][1] === convoUserObj[1][1] ? convo.users[1] : convo.users[0]
 				const loggedUser = users.find(user => user === foundUser._id)
-				console.log(users)
         return (
           <ListGroup.Item key={convo._id}  onClick={convoToShow.bind(null, convo)}>  
 					{loggedUser &&

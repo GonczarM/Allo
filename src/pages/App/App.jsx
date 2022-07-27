@@ -5,8 +5,7 @@ import Convo from '../../components/Conversation.js'
 import AuthGateway from '../AuthGateway/AuthGateway.js'
 import SearchUser from '../../components/SearchUser'
 import {Container, Row, Col, Card, Form, Button } from "react-bootstrap";
-import openSocket from 'socket.io-client'
-export const socket = openSocket(process.env.BACKEND_URL)
+import { io } from 'socket.io-client'
 
 
 function App(){
@@ -16,11 +15,15 @@ function App(){
   const [convo, setConvo] = useState(null)
 	const [session, setSession] = useState(null)
 	const [users, setUsers] = useState([])
+  const socket = io(process.env.BACKEND_URL)
 
 	useEffect(() => {
+    console.log('user socket')
 		socket.on('users', (users) => {
-			console.log(users)
+      if(users){
+        console.log('user socket triggered')
 				setUsers(users)
+      }
 		})
 	}, [])
 
@@ -95,17 +98,18 @@ function App(){
     )
   }
 
+  console.log('app')
   return(
   	<Container>
       {loggedIn ? 
       <Row>
         <Col xl={4} lg={4} md={4} sm={3}>
-          <SearchUser convoToShow={convoToShow} getUserInfo={getUserInfo} />    
-          <ConvosList user={user} users={users} convoToShow={convoToShow}/>
+          <SearchUser convoToShow={convoToShow} getUserInfo={getUserInfo} socket={socket} />    
+          <ConvosList user={user} users={users} convoToShow={convoToShow} />
 				</Col>
 				<Col xl={8} lg={8} md={8} sm={9}>    
           {convo &&                            
-            <Convo convo={convo} getUserInfo={getUserInfo} user={user}/>
+            <Convo convo={convo} getUserInfo={getUserInfo} user={user} socket={socket}/>
           }
         </Col>
       </Row>

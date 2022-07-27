@@ -1,16 +1,13 @@
 require('dotenv').config();
 const express = require('express');
+const { createServer } = require('http')
+const { Server } = require('socket.io');
 const app = express();
 const path = require('path');
 const logger = require('morgan');
 const session = require('express-session');
-const http = require('http')
-const server = http.createServer(app)
-const { Server } = require('socket.io');
-const user = require('./models/user');
-const { useSyncExternalStore } = require('react');
-const { connect } = require('http2');
-const io = new Server(server)
+const httpServer = createServer(app)
+const io = new Server(httpServer)
 // const favicon = require('serve-favicon');
 
 require('./config/database');
@@ -40,8 +37,8 @@ app.get('/*', function(req, res) {
 });
 
 const users = []
-io.on('connection', (socket) => {
-
+io.once('connection', (socket) => {
+	console.log(socket.id)
 	socket.on("message", (message) => {
 		io.sockets.emit('message', message)
 	})
@@ -61,7 +58,7 @@ io.on('connection', (socket) => {
 
 	socket.on('disconnect', () => {
 		const index = users.indexOf(socket.userId)
-		console.log('disconnect')
+		console.log('user disconnect')
 		if(index !== -1){
 			users.splice(index, 1)
 		}
@@ -71,6 +68,6 @@ io.on('connection', (socket) => {
 
 const port = process.env.PORT || 3001;
 
-server.listen(port, function() {
+httpServer.listen(port, function() {
   console.log(`Express app listening on port ${port}`);
 });

@@ -1,30 +1,31 @@
 import { useEffect, useState } from "react"
 import { Container, ListGroup } from "react-bootstrap"
-import openSocket from 'socket.io-client'
 import NewMessage from "./NewMessage"
 import Message from './Message'
-export const socket = openSocket(process.env.BACKEND_URL)
 
-const Conversation = ({convo, getUserInfo, user}) => {
+const Conversation = ({convo, getUserInfo, user, socket}) => {
 
-  const [messages, setMessages] = useState([])
+  	const [messages, setMessages] = useState([])
 	const [socketMessage, setSocketMessage] = useState(null)
 
-  useEffect(() => {
-    getMessages()
-  }, [convo])
+  	useEffect(() => {
+		console.log(convo)
+    	getMessages()
+  	}, [convo])
 
-	useEffect(() => {
-		socket.on('message', (msg) => {
-			if(user.username !== msg.user.username){
-				getMessages()
-				console.log('different user')
-			}
-		})
-	}, [])
+	// useEffect(() => {
+	// 	console.log('message socket')
+	// 	socket.on('message', (msg) => {
+	// 		if(msg && user.username !== msg.user.username){
+	// 			console.log('messge socket triggered')
+	// 			getMessages()
+	// 		}
+	// 	})
+	// }, [])
 
-  const getMessages = async () => {
-    const messagesResponse = await fetch(`/convos/convo/${convo._id}`, {
+  	const getMessages = async () => {
+		console.log('getmessages')
+    	const messagesResponse = await fetch(`/convos/convo/${convo._id}`, {
 			credentials: 'include'
 		})
 		const parsedResponse = await messagesResponse.json()
@@ -32,9 +33,9 @@ const Conversation = ({convo, getUserInfo, user}) => {
 		if(parsedResponse.status === 200){
 			setMessages(parsedResponse.convo.messages)
 		}
-  }
+  	}
 
-  const createMessage = async (formData) => {
+  	const createMessage = async (formData) => {
 		const messageResponse = await fetch(`/messages/${convo._id}`, {
 			method: "POST",
 			credentials: "include",
@@ -47,7 +48,6 @@ const Conversation = ({convo, getUserInfo, user}) => {
 		console.log(parsedResponse);
 		if(parsedResponse.status === 200){
 			setMessages([...messages, parsedResponse.message])
-			getUserInfo()
 			setSocketMessage(parsedResponse.message)
 		}
 	}
@@ -57,23 +57,25 @@ const Conversation = ({convo, getUserInfo, user}) => {
 		setSocketMessage(null)
 	}
 
+	console.log('convo')
   return (
     <>
-			<div>
-				<span>
-					{user.username === convo.users[0].username ? convo.users[1].username : convo.users[0].username}
-				</span>
-			</div>
-			<Container>
-        <ListGroup>
-          {messages.map(message => {
-						return (<Message message={message} user={user}/>)
-          })}
-        </ListGroup>
-        <NewMessage createMessage={createMessage} />
-			</Container>
+		<div>
+			<span>
+				{user.username === convo.users[0].username ? convo.users[1].username : convo.users[0].username}
+			</span>
+		</div>
+		<Container>
+        	<ListGroup>
+          	{messages.map(message => {
+				console.log(message)
+				return (<Message message={message} user={user}/>)
+          	})}
+        	</ListGroup>
+        	<NewMessage createMessage={createMessage} />
+		</Container>
     </>
-  )
+  	)
 }
 
 export default Conversation

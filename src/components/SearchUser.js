@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
-import openSocket from 'socket.io-client'
-export const socket = openSocket(process.env.BACKEND_URL)
 
-const SearchUser = ({ convoToShow, getUserInfo }) => {
+const SearchUser = ({ convoToShow, getUserInfo, socket }) => {
   const [username, setUsername] = useState('')
   const [foundUser, setFoundUser] = useState('')
 	const [socketConvo, setSocketConvo] = useState(null)
@@ -14,8 +12,12 @@ const SearchUser = ({ convoToShow, getUserInfo }) => {
   }
 
 	useEffect(() => {
+    console.log('convo socket')
 		socket.on('convo', (convo) => {
-			getUserInfo()
+      if(convo){
+        console.log('convo socket triggered')
+			  getUserInfo()
+      }
 		})
 	}, [])
 
@@ -48,7 +50,7 @@ const SearchUser = ({ convoToShow, getUserInfo }) => {
 		socket.emit('convo', socketConvo)
 		setSocketConvo(null)
 	}
-
+  console.log('searchuser')
   return (
     <>
       <Form onSubmit={(e) => {

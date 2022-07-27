@@ -4,6 +4,11 @@ import { Container, ListGroup } from "react-bootstrap"
 const Message = ({message, user}) => {
 
     const [showOG, setShowOG] = useState(false)
+    const [sameLang, setSameLang] = useState(false)
+
+    if(message.user.language === user.language){
+        setSameLang(true)
+    }
 
     let whichUser 
     let event = new Date(message.updatedAt)
@@ -14,7 +19,7 @@ const Message = ({message, user}) => {
     const toShowText = () => {
 		setShowOG(!showOG)
 	}
-
+    console.log('message')
     return (
         <ListGroup.Item key={message._id} className={whichUser}>
             <div><span className='username'>{message.user.username}</span></div>
