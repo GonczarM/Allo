@@ -9,9 +9,20 @@ const Conversation = ({convo, getUserInfo, user, socket}) => {
 	const [socketMessage, setSocketMessage] = useState(null)
 
   	useEffect(() => {
-		console.log(convo)
     	getMessages()
   	}, [convo])
+
+	useEffect(() => {
+		console.log('hello')
+		socket.on('messageSent', (message) => {
+			console.log('socket messageSent')
+			if(convo._id !== message.convo._id){
+				console.log('not in the same chat')
+			} else {
+				setMessages([...messages, message])
+			}
+		})
+	})
 
 	// useEffect(() => {
 	// 	console.log('message socket')
@@ -24,7 +35,6 @@ const Conversation = ({convo, getUserInfo, user, socket}) => {
 	// }, [])
 
   	const getMessages = async () => {
-		console.log('getmessages')
     	const messagesResponse = await fetch(`/convos/convo/${convo._id}`, {
 			credentials: 'include'
 		})
@@ -47,19 +57,22 @@ const Conversation = ({convo, getUserInfo, user, socket}) => {
 		const parsedResponse = await messageResponse.json()
 		console.log(parsedResponse);
 		if(parsedResponse.status === 200){
+			console.log('socket message')
+			socket.emit('messageReceived', parsedResponse)
 			setMessages([...messages, parsedResponse.message])
-			setSocketMessage(parsedResponse.message)
+
 		}
 	}
 
-	if(socketMessage){
-		socket.emit('message', socketMessage)
-		setSocketMessage(null)
-	}
+	// if(socketMessage){
+	// 	socket.emit('message', socketMessage)
+	// 	setSocketMessage(null)
+	// }
 
-	console.log('convo')
   return (
-    <>
+    <>	
+	{messages &&
+	<>
 		<div>
 			<span>
 				{user.username === convo.users[0].username ? convo.users[1].username : convo.users[0].username}
@@ -67,13 +80,14 @@ const Conversation = ({convo, getUserInfo, user, socket}) => {
 		</div>
 		<Container>
         	<ListGroup>
-          	{messages.map(message => {
-				console.log(message)
-				return (<Message message={message} user={user}/>)
-          	})}
+			{messages.map(message => {
+				return <Message message={message} user={user}/>
+			})}
         	</ListGroup>
         	<NewMessage createMessage={createMessage} />
 		</Container>
+	</>
+	}
     </>
   	)
 }

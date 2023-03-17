@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 const User = require('../models/user')
 const Conversation = require('../models/conversation')
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcrypt')
 
 function isAuthenticated(req, res, next){
 	if(req.user || req.session.userId){

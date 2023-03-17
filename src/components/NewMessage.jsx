@@ -18,7 +18,6 @@ const NewMessage = ({createMessage}) => {
 		createMessage({text})
 		setText("")
 	}
-	console.log('newmessage')
 	return (
 	<Form id='message' className='message'>
 		<Form.Group className='"mb-3' controlId="formBasic">

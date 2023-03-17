@@ -11,15 +11,15 @@ const SearchUser = ({ convoToShow, getUserInfo, socket }) => {
     setUsername(e.target.value)
   }
 
-	useEffect(() => {
-    console.log('convo socket')
-		socket.on('convo', (convo) => {
-      if(convo){
-        console.log('convo socket triggered')
-			  getUserInfo()
-      }
-		})
-	}, [])
+	// useEffect(() => {
+  //   console.log('convo socket')
+	// 	socket.on('convo', (convo) => {
+  //     if(convo){
+  //       console.log('convo socket triggered')
+	// 		  getUserInfo()
+  //     }
+	// 	})
+	// }, [])
 
   const handleSubmit = async () => {
     const userResponse = await fetch(`/users/search/${username}`, {
@@ -46,11 +46,10 @@ const SearchUser = ({ convoToShow, getUserInfo, socket }) => {
 		}
 	}
 
-	if(socketConvo){
-		socket.emit('convo', socketConvo)
-		setSocketConvo(null)
-	}
-  console.log('searchuser')
+	// if(socketConvo){
+	// 	socket.emit('convo', socketConvo)
+	// 	setSocketConvo(null)
+	// }
   return (
     <>
       <Form onSubmit={(e) => {

@@ -57,6 +57,7 @@ router.post('/:convo', isAuthenticated, async (req, res, next) => {
 				res.json({
 					status: 200,
 					message: foundConvo.messages[foundConvo.messages.length -1],
+					convo: foundConvo
 				})
 			}
 	}
